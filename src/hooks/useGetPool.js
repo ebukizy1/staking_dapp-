@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react";
 import { getProposalsContract } from "../constants/contracts";
 import { readOnlyProvider } from "../constants/providers";
-// import { decodeBytes32String } from "ethers";
 
 const useGetPools = () => {
-  const [pool, setPool] = useState([]);
+  const [pools, setPools] = useState([]);
 
   useEffect(() => {
-    const contract = getProposalsContract(readOnlyProvider);
-    contract
-      .getPoolByID(0)
-      .then((res) => {
-        // Convert the Proxy object to a regular array
-        const myTarget = Array.from(
-          { length: res.length },
-          (_, index) => res[index]
-        );
-        setPool((prev) => [...prev, myTarget]);
-      })
-      .catch((err) => {
-        console.error("error fetching pools: ", err);
-      });
-  }, []);
+    const fetchPools = async () => {
+      try {
+        const contract = getProposalsContract(readOnlyProvider);
+        let numberOfPools = await contract.id();
 
-  return pool;
+        const poolData = [];
+        for (let i = 0; i < numberOfPools; i++) {
+          poolData.push(await contract.getPoolByID(i));
+        }
+
+        setPools(
+          poolData.map(pool =>
+            Array.from({ length: pool.length }, (_, index) => pool[index])
+          )
+        );
+      } catch (error) {
+        console.error("Error fetching pools: ", error);
+      }
+    };
+
+    fetchPools();
+  }, [setPools]); // Add setPools to dependency array
+
+  return pools;
 };
 
 export default useGetPools;
