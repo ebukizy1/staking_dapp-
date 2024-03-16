@@ -4,6 +4,7 @@ import "@radix-ui/themes/styles.css";
 import Header from "./component/Header";
 import useGetPools from "./hooks/useGetPool";
 import PoolCard from "./component/PoolCard";
+// import { useState } from "react";
 
 
 configureWeb3Modal();
@@ -11,6 +12,7 @@ configureWeb3Modal();
 function App() {
     const pools = useGetPools();
     // const handleVote = useHandleVote();
+    // const [isOpen,setIsOpen] = useState(false)
 
     const structuredPools = pools.map((item, index) => ({
         id: index,
@@ -22,41 +24,27 @@ function App() {
     
       console.log("structuredPools", structuredPools);
    
-
+    // const handleStake = ()=>{
+    //     setIsOpen(true)
+    // }
     return (
+
         <Container>
+            
             <Header />
             <main className="mt-6">
                 <Box mb="4">
                 {structuredPools.map((pool) => (
           <PoolCard 
             key={pool.id}
+            id={pool.id}
             totalStakers={Number(pool.totalStakers)}
             totalStakedAmount={Number(pool.totalStakedAmount)}
             rewardReserve={Number(pool.rewardReserve)}
-            rewardRate={Number(pool.rewardRate)}
+            rewardRate={Number(pool.rewardRate)}      
           />
         ))}
-            
-                </Box>
-
-        {/* <Flex wrap={"wrap"} gap={"6"}>
-                    {loading ? (
-                        <Text>Loading...</Text>
-                    ) : proposals.length !== 0 ? (
-                        proposals.map((item, index) => (
-                            <Proposal
-                                key={index}
-                                name={item.name}
-                                handleVote={() => handleVote(index)}
-                                id={index}
-                                voteCount={Number(item.voteCount)}
-                            />
-                        ))
-                    ) : (
-                        <Text>Could not get proposals!!</Text>
-                    )}
-                </Flex> */}
+            </Box>
             </main>
         </Container>
     );

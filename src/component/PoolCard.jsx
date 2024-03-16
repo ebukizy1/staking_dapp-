@@ -1,15 +1,26 @@
 /* eslint-disable react/prop-types */
-import { Box, Card, Flex, Text } from "@radix-ui/themes";
+import {Box, Card, Flex, Text } from "@radix-ui/themes";
+import { StakeComponent } from "./StakeComponent";
+import { UnStakeComponent } from "./UnStakeComponent";
+import { ClaimReward } from "./ClaimReward";
 
 const PoolCard = ({
+  id,
   totalStakers,
   totalStakedAmount,
   rewardReserve,
   rewardRate,
-  handleStake,
+  // handleStake,
 }) => {
+
+
+  
   return (
+   <>
+   
     <Card size="2" style={{ width: 425 }}>
+
+
       <Flex gap="" align="center">
         <Box width={"100%"}>
           <Flex justify={"between"} align={"center"}>
@@ -27,16 +38,16 @@ const PoolCard = ({
                 rewardRate {rewardRate}
               </Text>
             </div>
-            <button
-              className="text-white bg-blue-600 py-1 px-4 rounded-md"
-              onClick={() => handleStake(totalStakers)}
-            >
-              Stake
-            </button>
+            
+            <StakeComponent id={id}/>
+            <UnStakeComponent id={id} />
+            <ClaimReward id={id}/>
           </Flex>
         </Box>
       </Flex>
     </Card>
+
+    </>
   );
 };
 
